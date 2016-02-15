@@ -60,7 +60,7 @@ module Formular
       @tag      = tag
       @path     = path # e.g. [replies, author]
       @model    = options[:model]
-      @errors   = options[:errors]
+      @errors   = options[:errors] || {} # FIXME.
       @prefix   = prefix
 
       @controls = {

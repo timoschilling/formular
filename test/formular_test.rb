@@ -2,10 +2,11 @@ require "test_helper"
 
 class FormularTest < Minitest::Spec
   describe "no model" do
-    let (:model) { Object.new }
+    let (:builder) { Formular::Builder.new(defaults: Formular::Builder::Defaults.new) }
+    # let (:model) { Object.new }
 
     it do
-      builder.form(model: model, url: "/"){}.must_eq %{}
+      builder.form(url: "/"){}.must_eq %{}
     end
   end
 
