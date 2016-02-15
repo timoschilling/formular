@@ -1,6 +1,15 @@
 require "test_helper"
 
 class FormularTest < Minitest::Spec
+  describe "no model" do
+    let (:model) { Object.new }
+
+    it do
+      builder.form(model: model, url: "/"){}.must_eq %{}
+    end
+  end
+
+
   let (:model) { Comment.new(nil, "Amazing!", [Reply.new]) }
   let (:builder) { Formular::Builder.new(model: model) }
 

@@ -36,11 +36,31 @@ module Formular
     include Id
     include Name
 
-    def initialize(tag: Tag.new, path: [], prefix: ["form"], model:, parent:nil, errors:nil)
+    class Defaults
+      module Errors
+        def call(options)
+          {
+            errors: options[:model].errors || {},
+          }.merge(super(options))
+        end
+      end
+
+      def call(options)
+        options
+      end
+    end
+
+    # Model#initialize should merge
+    # * errors: model.errors
+    # Model#control should merge
+    # * reader_value: model.send(name)
+    def initialize(tag: Tag.new, path: [], prefix: ["form"], parent:nil, defaults: Defaults.new.extend(Defaults::Errors), **options)
+      options = defaults.(options) # could be pipeline.
+
       @tag      = tag
       @path     = path # e.g. [replies, author]
-      @model    = model
-      @errors   = errors || model.errors||{} # TODO: allow other ways to inject errors object.
+      @model    = options[:model]
+      @errors   = options[:errors]
       @prefix   = prefix
 
       @controls = {
