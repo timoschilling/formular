@@ -1,7 +1,8 @@
 module Formular
   module Helper # TODO: test me!
-    def form(model, url, attributes={ method: :post }, &block)
-      Formular::Helper._frontend.new(model: model).form({action: url}.merge(attributes), &block)
+    def form(model, url, path:, **attributes, &block)
+      attributes[:method] ||= :post
+      Formular::Helper._frontend.new(model: model, path: path).form({action: url}.merge(attributes), &block)
     end
 
     FRONTENDS = {
